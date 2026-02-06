@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love, Nuzuu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff9fb;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Music Controls */
+        .music-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .music-btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            background: #ff3357;
+            transform: scale(1.1);
+        }
+
+        .music-info {
+            font-size: 0.9rem;
+            color: #a12c51;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Header */
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header-content {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .heart-icon {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        /* Section styling */
+        section {
+            padding: 100px 0;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #a12c51;
+        }
+
+        /* Game Sections */
+        .game-section {
+            background-color: #fff0f5;
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-instructions {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: #555;
+        }
+
+        /* Game 1: Name Input */
+        .name-game {
+            text-align: center;
+        }
+
+        .name-input {
+            padding: 15px 25px;
+            font-size: 1.3rem;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #ff4d6d;
+            border-radius: 50px;
+            margin: 20px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.3);
+        }
+
+        .submit-btn {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #ff3357;
+            transform: scale(1.05);
+        }
+
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .hint {
+            margin-top: 20px;
+            font-style: italic;
+            color: #a12c51;
+            font-size: 1.2rem;
+            min-height: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hint.show {
+            opacity: 1;
+        }
+
+        .attempt-counter {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Game 2: Qualities Selection */
+        .qualities-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .quality-option {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            font-size: 1.2rem;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quality-option:hover {
+            transform: translateY(-5px);
+        }
+
+        .quality-option.selected {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #388E3C;
+        }
+
+        .quality-option.wrong {
+            background-color: #f44336;
+            color: white;
+            border-color: #d32f2f;
+            animation: shake 0.5s;
+        }
+
+        .quality-option.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Game 3: King Comparison Game */
+        .comparison-game {
+            text-align: center;
+        }
+
+        .comparison-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .comparison-option {
+            width: 250px;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .comparison-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comparison-option:hover {
+            transform: scale(1.05);
+        }
+
+        .comparison-option.selected {
+            border: 5px solid #4CAF50;
+        }
+
+        .comparison-option.wrong {
+            border: 5px solid #f44336;
+            animation: vibrate 0.5s;
+        }
+
+        .option-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .vs {
+            font-size: 2.5rem;
+            color: #ff4d6d;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .king-title {
+            font-size: 2rem;
+            color: #a12c51;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Our Photos Section */
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .photo-item {
+            border-radius: 15px;
+            overflow: hidden;
+            height: 350px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* Proposal Section */
+        .proposal-section {
+            background: linear-gradient(rgba(161, 44, 81, 0.9), rgba(161, 44, 81, 0.8)), 
+                        url('https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .proposal-section h2 {
+            color: white;
+        }
+
+        .proposal-text {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .proposal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .proposal-yes {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .proposal-no {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .proposal-yes:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .proposal-no:hover {
+            background-color: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        /* Love Letter */
+        .love-letter {
+            background-color: white;
+            border-radius: 20px;
+            padding: 60px;
+            margin: 60px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .love-letter.show {
+            display: block;
+            animation: fadeIn 1s ease;
+        }
+
+        .letter-content {
+            font-size: 1.3rem;
+            line-height: 1.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .letter-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            text-align: right;
+            margin-top: 50px;
+            color: #a12c51;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 50px;
+            margin: 40px 0;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4d6d, #a12c51);
+            border-radius: 50px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Countdown Timer */
+        .countdown-container {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #ff4d6d, #a12c51);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .countdown-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .countdown-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-value {
+            font-size: 4rem;
+            line-height: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Volume Slider */
+        .volume-slider {
+            width: 100px;
+            height: 5px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff4d6d;
+            cursor: pointer;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff4d6d;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px) rotate(-1deg); }
+            40% { transform: translateX(5px) rotate(1deg); }
+            60% { transform: translateX(-5px) rotate(-1deg); }
+            80% { transform: translateX(5px) rotate(1deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+            .subtitle { font-size: 1.5rem; }
+            section { padding: 60px 0; }
+            .game-section { padding: 40px 20px; }
+            .qualities-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .comparison-container { flex-direction: column; }
+            .vs { transform: rotate(90deg); margin: 20px 0; }
+            .proposal-buttons { flex-direction: column; align-items: center; }
+            .proposal-yes, .proposal-no { width: 100%; max-width: 300px; }
+            .love-letter { padding: 40px 20px; }
+            .countdown-timer { font-size: 2rem; }
+            .countdown-value { font-size: 3rem; }
+            .music-controls { top: 10px; right: 10px; padding: 8px 12px; }
+            .music-info { display: none; }
+            .volume-slider { width: 60px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.8rem; }
+            .subtitle { font-size: 1.2rem; }
+            .qualities-container { grid-template-columns: 1fr; }
+            .countdown-timer { flex-wrap: wrap; gap: 15px; }
+            .music-controls { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Music (hidden) -->
+    <audio id="background-music" loop>
+        <source src="song.mp4" type="audio/mp4">
+        <source src="song.mp3" type="audio/mpeg">
+        <source src="song.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Controls -->
+    <div class="music-controls">
+        <button class="music-btn" id="play-pause-btn">
+            <i class="fas fa-play"></i>
+        </button>
+        <div class="music-info" id="music-info">Our Song ♫</div>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>My Dearest Nuzuu</h1>
+            <div class="heart-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <p class="subtitle">This journey is just for you, my love</p>
+            <p class="subtitle">Complete the challenges to discover my question</p>
+            <p class="subtitle" style="font-size: 1.2rem; margin-top: 20px;">
+                <i class="fas fa-music"></i> Our special song is playing in the background
+            </p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="font-size: 2rem; position: absolute; bottom: 30px;"></i>
+        </div>
+    </header>
+
+    <!-- Countdown Timer -->
+    <section id="countdown-section">
+        <div class="container">
+            <div class="countdown-container">
+                <div class="countdown-title">Time Until Our Forever Begins</div>
+                <div class="countdown-timer" id="countdown-timer">
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Bar -->
+    <section>
+        <div class="container">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p style="text-align: center; font-size: 1.2rem; color: #a12c51;">Complete all challenges to unlock the final question</p>
+        </div>
+    </section>
+
+    <!-- Game 1: Name Input -->
+    <section>
+        <div class="container">
+            <div class="game-section">
+                <h2>Challenge 1: What's In A Name?</h2>
+                <div class="game-instructions">
+                    <p>To begin our journey, please enter your full name below.</p>
+                    <p><em>But be careful... there might be a twist!</em></p>
+                </div>
+                <div class="name-game">
+                    <input type="text" class="name-input" id="name-input" placeholder="Enter your full name">
+                    <br>
+                    <div class="attempt-counter" id="attempt-counter">Attempts left: 3</div>
+                    <button class="submit-btn" id="name-submit">Submit Name</button>
+                    <div class="hint" id="name-hint"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game 2: Qualities Selection -->
+    <section id="game-2" style="display: none;">
+        <div class="container">
+            <div class="game-section">
+                <h2>Challenge 2: Why Should I Date You?</h2>
+                <div class="game-instructions">
+                    <p>Select all the qualities that make you an amazing partner.</p>
+                    <p>But beware - wrong choices will disappear with a message!</p>
+                    <p id="quality-counter">Selected: 0/9 good qualities</p>
+                </div>
+                <div class="qualities-container" id="qualities-container">
+                    <!-- Qualities will be added by JavaScript -->
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="submit-btn" id="qualities-submit" disabled>Continue</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game 3: King Comparison Game -->
+    <section id="game-3" style="display: none;">
+        <div class="container">
+            <div class="game-section">
+                <h2>Challenge 3: King of My Heart Competition</h2>
+                <div class="game-instructions">
+                    <p>In each round, choose who deserves to be the King of your heart.</p>
+                    <p>Compare me with others and choose the better option!</p>
+                </div>
+                <div class="comparison-game">
+                    <div class="king-title" id="round-title">Round 1: Who makes your heart beat faster?</div>
+                    <div class="comparison-container" id="comparison-container">
+                        <!-- Comparison options will be added by JavaScript -->
+                    </div>
+                    <div class="hint" id="comparison-hint"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Photos -->
+    <section id="our-photos" style="display: none;">
+        <div class="container">
+            <h2>Our Beautiful Memories</h2>
+            <div class="game-instructions">
+                <p>Before we continue, let's take a moment to remember some of our favorite moments together.</p>
+            </div>
+            <div class="photos-container">
+                <div class="photo-item">
+                    <img src="img1.jpeg" alt="Our First Date" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80'; this.alt='Our special memory';">
+                    <div class="photo-caption">Our First Date</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img2.jpeg" alt="That Time We Laughed Until We Cried" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'; this.alt='Our happy moment';">
+                    <div class="photo-caption">That Time We Laughed Until We Cried</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img3.jpeg" alt="Our Favorite Adventure" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'; this.alt='Our adventure together';">
+                    <div class="photo-caption">Our Favorite Adventure</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="submit-btn" id="photos-continue">Continue to Final Challenge</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Proposal -->
+    <section id="final-proposal" style="display: none;">
+        <div class="container">
+            <div class="proposal-section">
+                <h2>The Final Question</h2>
+                <div class="proposal-text">
+                    <p>My darling Nuzuu, you've completed every challenge, proven your amazing qualities, and shown me once again why you're the best person in my world.</p>
+                    <p>Every day with you is a blessing. You've filled my life with so much joy, love, and happiness that I can't imagine a single day without you.</p>
+                    <p>You are my sunrise and my sunset, my today and my tomorrow. I want to wake up next to you every morning and fall asleep holding you every night for the rest of my life.</p>
+                    <p>You are my everything, and now I want to ask you the most important question of my life...</p>
+                </div>
+                
+                <h2 style="font-size: 4rem; margin: 40px 0;">Will You Marry Me, Nuzuu?</h2>
+                
+                <div class="proposal-buttons">
+                    <button class="proposal-yes" id="final-yes">YES! A Thousand Times Yes!</button>
+                    <button class="proposal-no" id="final-no">No</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Letter -->
+    <section id="love-letter" style="display: none;">
+        <div class="container">
+            <div class="love-letter" id="letter-content">
+                <div class="letter-content">
+                    <p>My Dearest Nuzuu,</p>
+                    
+                    <p>From the moment I met you, I knew there was something special about you. The way you laugh, the way your eyes light up when you talk about things you love, the kindness you show to everyone around you - you captured my heart completely.</p>
+                    
+                    <p>Every day with you feels like a beautiful dream. You've brought so much light into my life, filled it with laughter, and shown me what true love really means. You're not just my partner; you're my best friend, my confidant, and the person I want to share every moment with.</p>
+                    
+                    <p>I remember our first date, our inside jokes, the way you make me feel like I can conquer the world just by having you by my side. I cherish every memory we've created together and look forward to all the adventures that await us.</p>
+                    
+                    <p>You are the most amazing person I've ever known - strong, beautiful, intelligent, and with a heart of gold. You inspire me to be a better person every single day.</p>
+                    
+                    <p>Today, as you read this, I want you to know that my love for you is endless and eternal. I promise to stand by your side through all of life's adventures, to support your dreams, to make you laugh every day, and to love you more with each passing moment.</p>
+                    
+                    <p>Thank you for saying yes. Thank you for choosing me. Thank you for being you.</p>
+                    
+                    <p>I cannot wait to spend the rest of my life with you, creating countless more beautiful memories together.</p>
+                    
+                    <p>All my love, forever and always,</p>
+                    
+                    <div class="letter-signature">
+                        Your Future Husband
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Made with <i class="fas fa-heart" style="color: #ff4d6d;"></i> for the most amazing woman in the world</p>
+            <p>My love for you is eternal, Nuzuu</p>
+            <p>© <span id="current-year"></span> Forever Yours</p>
+            <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
+                <i class="fas fa-music"></i> Our song continues to play as a symbol of our endless love
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // BACKGROUND MUSIC SYSTEM
+        // ============================================
+        const backgroundMusic = document.getElementById('background-music');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const musicInfo = document.getElementById('music-info');
+        
+        // Auto-play music when page loads (with user interaction requirement)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to play music automatically (modern browsers require user interaction)
+            const playMusic = () => {
+                backgroundMusic.volume = 0.5;
+                backgroundMusic.loop = true;
+                
+                // Try to play
+                const playPromise = backgroundMusic.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Update button to show pause
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-up"></i>';
+                    }).catch(error => {
+                        // Auto-play was prevented, show play button
+                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        musicInfo.innerHTML = 'Click to play our song ♫';
+                        console.log("Auto-play prevented. User needs to interact first.");
+                    });
+                }
+            };
+            
+            // Try to play immediately
+            playMusic();
+            
+            // Also try on first user interaction
+            document.addEventListener('click', function initAudio() {
+                playMusic();
+                document.removeEventListener('click', initAudio);
+            }, { once: true });
+        });
+        
+        // Play/Pause button functionality
+        playPauseBtn.addEventListener('click', function() {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-up"></i>';
+                playPauseBtn.style.animation = 'pulse 0.5s';
+                setTimeout(() => {
+                    playPauseBtn.style.animation = '';
+                }, 500);
+            } else {
+                backgroundMusic.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                musicInfo.innerHTML = 'Music Paused';
+            }
+        });
+        
+        // Volume control
+        volumeSlider.addEventListener('input', function() {
+            backgroundMusic.volume = this.value;
+            // Update music info with volume indicator
+            const volumeLevel = this.value * 100;
+            musicInfo.innerHTML = `Volume: ${Math.round(volumeLevel)}%`;
+            
+            // Show different icons based on volume
+            setTimeout(() => {
+                if (volumeLevel === 0) {
+                    musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-mute"></i>';
+                } else if (volumeLevel < 50) {
+                    musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-down"></i>';
+                } else {
+                    musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-up"></i>';
+                }
+            }, 1000);
+        });
+        
+        // Update music info when song ends (should loop)
+        backgroundMusic.addEventListener('ended', function() {
+            // Song ended but should loop automatically
+            musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-redo"></i>';
+            setTimeout(() => {
+                musicInfo.innerHTML = 'Our Song ♫ <i class="fas fa-volume-up"></i>';
+            }, 1000);
+        });
+        
+        // Visual feedback when song is playing
+        backgroundMusic.addEventListener('play', function() {
+            musicInfo.style.color = '#ff4d6d';
+            setTimeout(() => {
+                musicInfo.style.color = '#a12c51';
+            }, 500);
+        });
+        
+        // ============================================
+        // COUNTDOWN TIMER
+        // ============================================
+        function updateCountdown() {
+            // Set the target date (1 year from now)
+            const targetDate = new Date();
+            targetDate.setFullYear(targetDate.getFullYear() + 1);
+            
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+            
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+        }
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+        
+        // ============================================
+        // GAME SYSTEM
+        // ============================================
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Game State
+        let gameState = {
+            nameAttempts: 0,
+            maxNameAttempts: 3,
+            selectedQualities: 0,
+            totalGoodQualities: 9,
+            comparisonRound: 1,
+            totalComparisonRounds: 3,
+            comparisonCompleted: false
+        };
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (gameState.nameAttempts >= gameState.maxNameAttempts ? 25 : 0) + 
+                           (gameState.selectedQualities >= gameState.totalGoodQualities ? 25 : 0) + 
+                           (gameState.comparisonCompleted ? 25 : 0) +
+                           (document.getElementById('our-photos').style.display !== 'none' ? 25 : 0);
+            
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+        
+        // Game 1: Name Input
+        const nameInput = document.getElementById('name-input');
+        const nameSubmit = document.getElementById('name-submit');
+        const nameHint = document.getElementById('name-hint');
+        const attemptCounter = document.getElementById('attempt-counter');
+        
+        nameSubmit.addEventListener('click', function() {
+            const enteredName = nameInput.value.trim().toLowerCase();
+            gameState.nameAttempts++;
+            
+            // Update attempt counter
+            const attemptsLeft = gameState.maxNameAttempts - gameState.nameAttempts;
+            attemptCounter.textContent = `Attempts left: ${attemptsLeft}`;
+            
+            // Check if she entered "Nuzuu Alok" or variations
+            const acceptedNames = [
+                "nuzuu alok",
+                "nuzuualok",
+                "alok nuzuu",
+                "nuzuu  alok",
+                "nuzu alok",
+                "nuzu alok"
+            ];
+            
+            let nameAccepted = false;
+            for (const name of acceptedNames) {
+                if (enteredName.includes(name)) {
+                    nameAccepted = true;
+                    break;
+                }
+            }
+            
+            if (nameAccepted) {
+                // Success - show next game
+                nameHint.textContent = "Perfect! Nuzuu Alok... that sounds beautiful!";
+                nameHint.classList.add('show');
+                nameInput.disabled = true;
+                nameSubmit.disabled = true;
+                
+                // Play happy sound effect
+                backgroundMusic.volume = 0.7;
+                setTimeout(() => {
+                    backgroundMusic.volume = volumeSlider.value;
+                }, 500);
+                
+                // Show Game 2 after delay
+                setTimeout(() => {
+                    document.getElementById('game-2').style.display = 'block';
+                    updateProgress();
+                    // Scroll to Game 2
+                    document.getElementById('game-2').scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            } else {
+                // Wrong name
+                if (gameState.nameAttempts < gameState.maxNameAttempts) {
+                    // Give hints but don't reveal full name
+                    if (gameState.nameAttempts === 1) {
+                        nameHint.textContent = "Hmm, that doesn't seem quite right... Try thinking about our future together.";
+                        nameHint.classList.add('show');
+                    } else if (gameState.nameAttempts === 2) {
+                        nameHint.textContent = "Not quite... Maybe what your name would be if we were married?";
+                        nameHint.classList.add('show');
+                    }
+                    nameInput.value = '';
+                    nameInput.focus();
+                    
+                    // Play error sound (subtle volume dip)
+                    const currentVolume = backgroundMusic.volume;
+                    backgroundMusic.volume = 0.3;
+                    setTimeout(() => {
+                        backgroundMusic.volume = currentVolume;
+                    }, 300);
+                } else {
+                    // After max attempts, let her proceed anyway
+                    nameHint.textContent = "Alright, I'll give you a hint for next time... Think: Nuzuu + Alok 😉";
+                    nameHint.classList.add('show');
+                    nameInput.disabled = true;
+                    nameSubmit.disabled = true;
+                    
+                    // Show Game 2 after delay
+                    setTimeout(() => {
+                        document.getElementById('game-2').style.display = 'block';
+                        updateProgress();
+                        document.getElementById('game-2').scrollIntoView({ behavior: 'smooth' });
+                    }, 2000);
+                }
+            }
+            
+            updateProgress();
+        });
+        
+        // Allow Enter key to submit name
+        nameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                nameSubmit.click();
+            }
+        });
+        
+        // Game 2: Qualities Selection
+        // Shuffled qualities - good and bad mixed together
+        const qualities = [
+            { text: "Makes you laugh every day", good: true },
+            { text: "Always supportive", good: true },
+            { text: "Forgets important dates", good: false },
+            { text: "Beautiful smile", good: true },
+            { text: "Kind heart", good: true },
+            { text: "Hogs the blanket", good: false },
+            { text: "Your best friend", good: true },
+            { text: "Always late", good: false },
+            { text: "Makes you a better person", good: true },
+            { text: "Shares your dreams", good: true },
+            { text: "Terrible at cooking", good: false },
+            { text: "Loves you unconditionally", good: true },
+            { text: "Snores loudly", good: false },
+            { text: "Your perfect partner", good: true },
+            { text: "Leaves socks everywhere", good: false }
+        ];
+        
+        // Shuffle the qualities array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        const shuffledQualities = shuffleArray([...qualities]);
+        
+        const qualitiesContainer = document.getElementById('qualities-container');
+        const qualityCounter = document.getElementById('quality-counter');
+        const qualitiesSubmit = document.getElementById('qualities-submit');
+        
+        // Create quality buttons
+        shuffledQualities.forEach(quality => {
+            const button = document.createElement('div');
+            button.className = `quality-option`;
+            button.textContent = quality.text;
+            button.dataset.good = quality.good;
+            
+            button.addEventListener('click', function() {
+                if (button.classList.contains('selected') || button.classList.contains('disabled')) {
+                    return;
+                }
+                
+                if (quality.good) {
+                    // Good quality - select it
+                    button.classList.add('selected');
+                    gameState.selectedQualities++;
+                    
+                    // Play positive sound
+                    backgroundMusic.volume = 0.7;
+                    setTimeout(() => {
+                        backgroundMusic.volume = volumeSlider.value;
+                    }, 200);
+                    
+                    // Update counter
+                    qualityCounter.textContent = `Selected: ${gameState.selectedQualities}/${gameState.totalGoodQualities} good qualities`;
+                    
+                    // Enable submit button if all good qualities selected
+                    if (gameState.selectedQualities >= gameState.totalGoodQualities) {
+                        qualitiesSubmit.disabled = false;
+                        qualitiesSubmit.innerHTML = '<i class="fas fa-heart"></i> Continue to Next Challenge <i class="fas fa-heart"></i>';
+                        
+                        // Play celebration sound
+                        backgroundMusic.volume = 0.8;
+                        setTimeout(() => {
+                            backgroundMusic.volume = volumeSlider.value;
+                        }, 1000);
+                    }
+                } else {
+                    // Bad quality - show wrong animation and disable
+                    button.classList.add('wrong');
+                    
+                    // Play error sound
+                    const currentVolume = backgroundMusic.volume;
+                    backgroundMusic.volume = 0.3;
+                    setTimeout(() => {
+                        backgroundMusic.volume = currentVolume;
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        button.classList.remove('wrong');
+                        button.classList.add('disabled');
+                        button.textContent = "Oops! Not this one!";
+                    }, 500);
+                }
+                
+                updateProgress();
+            });
+            
+            qualitiesContainer.appendChild(button);
+        });
+        
+        qualitiesSubmit.addEventListener('click', function() {
+            // Show Game 3
+            document.getElementById('game-3').style.display = 'block';
+            updateProgress();
+            loadComparisonRound();
+            document.getElementById('game-3').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Game 3: King Comparison Game
+        const comparisonRounds = [
+            {
+                title: "Round 1: Who makes your heart beat faster?",
+                option1: { name: "Alok", correct: true, emoji: "👑" },
+                option2: { name: "A random celebrity", correct: false, emoji: "🌟" }
+            },
+            {
+                title: "Round 2: Who understands you better?",
+                option1: { name: "Alok", correct: true, emoji: "💖" },
+                option2: { name: "A psychic", correct: false, emoji: "🔮" }
+            },
+            {
+                title: "Round 3: Who will love you forever?",
+                option1: { name: "Alok", correct: true, emoji: "💍" },
+                option2: { name: "Your favorite TV character", correct: false, emoji: "📺" }
+            }
+        ];
+        
+        const comparisonContainer = document.getElementById('comparison-container');
+        const comparisonHint = document.getElementById('comparison-hint');
+        const roundTitle = document.getElementById('round-title');
+        
+        function loadComparisonRound() {
+            const round = comparisonRounds[gameState.comparisonRound - 1];
+            roundTitle.textContent = round.title;
+            comparisonContainer.innerHTML = '';
+            comparisonHint.textContent = '';
+            comparisonHint.classList.remove('show');
+            
+            // Create Alok option
+            const alokOption = document.createElement('div');
+            alokOption.className = 'comparison-option';
+            alokOption.dataset.correct = true;
+            alokOption.innerHTML = `
+                <div style="width:100%; height:100%; background: linear-gradient(135deg, #ffd1dc, #ff4d6d); display: flex; justify-content: center; align-items: center; font-size: 5rem;">
+                    ${round.option1.emoji}
+                </div>
+                <div class="option-label">${round.option1.name}</div>
+            `;
+            
+            // Create VS
+            const vsDiv = document.createElement('div');
+            vsDiv.className = 'vs';
+            vsDiv.textContent = 'VS';
+            
+            // Create other option
+            const otherOption = document.createElement('div');
+            otherOption.className = 'comparison-option';
+            otherOption.dataset.correct = false;
+            otherOption.innerHTML = `
+                <div style="width:100%; height:100%; background: linear-gradient(135deg, #c9e9ff, #2196f3); display: flex; justify-content: center; align-items: center; font-size: 5rem;">
+                    ${round.option2.emoji}
+                </div>
+                <div class="option-label">${round.option2.name}</div>
+            `;
+            
+            // Add click events
+            alokOption.addEventListener('click', handleComparisonChoice);
+            otherOption.addEventListener('click', handleComparisonChoice);
+            
+            comparisonContainer.appendChild(alokOption);
+            comparisonContainer.appendChild(vsDiv);
+            comparisonContainer.appendChild(otherOption);
+        }
+        
+        function handleComparisonChoice(e) {
+            const option = e.currentTarget;
+            const isCorrect = option.dataset.correct === 'true';
+            
+            if (isCorrect) {
+                // Correct choice
+                option.classList.add('selected');
+                comparisonHint.textContent = "Perfect choice! Of course it's me!";
+                comparisonHint.classList.add('show');
+                
+                // Play happy sound
+                backgroundMusic.volume = 0.7;
+                setTimeout(() => {
+                    backgroundMusic.volume = volumeSlider.value;
+                }, 500);
+                
+                // Move to next round or complete game
+                setTimeout(() => {
+                    if (gameState.comparisonRound < gameState.totalComparisonRounds) {
+                        gameState.comparisonRound++;
+                        loadComparisonRound();
+                    } else {
+                        // All rounds completed
+                        gameState.comparisonCompleted = true;
+                        comparisonHint.textContent = "You chose me every time! You're ready for the final challenge!";
+                        comparisonHint.classList.add('show');
+                        
+                        // Play celebration sound
+                        backgroundMusic.volume = 0.8;
+                        setTimeout(() => {
+                            backgroundMusic.volume = volumeSlider.value;
+                        }, 1000);
+                        
+                        // Show photos section after delay
+                        setTimeout(() => {
+                            document.getElementById('our-photos').style.display = 'block';
+                            updateProgress();
+                            document.getElementById('our-photos').scrollIntoView({ behavior: 'smooth' });
+                        }, 2000);
+                    }
+                }, 1500);
+            } else {
+                // Wrong choice
+                option.classList.add('wrong');
+                comparisonHint.textContent = "Wrong choice! Try again - pick the King of your heart!";
+                comparisonHint.classList.add('show');
+                
+                // Play error sound
+                const currentVolume = backgroundMusic.volume;
+                backgroundMusic.volume = 0.3;
+                setTimeout(() => {
+                    backgroundMusic.volume = currentVolume;
+                }, 300);
+                
+                // Remove vibration class after animation
+                setTimeout(() => {
+                    option.classList.remove('wrong');
+                }, 500);
+            }
+            
+            updateProgress();
+        }
+        
+        // Photos continue button
+        document.getElementById('photos-continue').addEventListener('click', function() {
+            document.getElementById('final-proposal').style.display = 'block';
+            updateProgress();
+            document.getElementById('final-proposal').scrollIntoView({ behavior: 'smooth' });
+            
+            // Increase volume for proposal
+            backgroundMusic.volume = 0.6;
+        });
+        
+        // Final Proposal
+        const finalYes = document.getElementById('final-yes');
+        const finalNo = document.getElementById('final-no');
+        const noMessages = [
+            "What?",
+            "Why?",
+            "Are you sure?",
+            "I thought you loved me ;(",
+            "Please reconsider!",
+            "My heart is breaking!",
+            "I'll never give up!",
+            "Just say yes already!",
+            "OKAY FINE! I'LL SAY YES!"
+        ];
+        let noClickCount = 0;
+        
+        finalYes.addEventListener('click', function() {
+            // Show love letter
+            document.getElementById('love-letter').style.display = 'block';
+            document.getElementById('letter-content').classList.add('show');
+            
+            // Play final celebration music at full volume
+            backgroundMusic.volume = 1;
+            musicInfo.innerHTML = 'Celebration! ♫ <i class="fas fa-volume-up"></i>';
+            
+            // Create celebration
+            createCelebration();
+            
+            // Update footer with married name
+            document.querySelector('footer p:nth-child(2)').textContent = "My love for you is eternal, Nuzuu Alok";
+            
+            // Scroll to letter
+            setTimeout(() => {
+                document.getElementById('love-letter').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        });
+        
+        finalNo.addEventListener('click', function() {
+            if (noClickCount < noMessages.length) {
+                // Change button text
+                finalNo.textContent = noMessages[noClickCount];
+                noClickCount++;
+                
+                // Make button change colors
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#00bcd4', '#009688', '#4caf50'];
+                finalNo.style.backgroundColor = colors[noClickCount % colors.length];
+                
+                // Make button bigger
+                finalNo.style.transform = `scale(${1 + (noClickCount * 0.1)})`;
+                
+                // Play funny sound effect
+                if (noClickCount < 5) {
+                    backgroundMusic.volume = 0.4;
+                    setTimeout(() => {
+                        backgroundMusic.volume = volumeSlider.value;
+                    }, 200);
+                } else {
+                    // Louder sound as she persists
+                    backgroundMusic.volume = 0.2;
+                    setTimeout(() => {
+                        backgroundMusic.volume = volumeSlider.value;
+                    }, 300);
+                }
+                
+                // After several clicks, force yes
+                if (noClickCount >= 5) {
+                    finalYes.style.transform = 'scale(1.5)';
+                    finalYes.style.backgroundColor = '#ff5722';
+                    finalYes.innerHTML = '<i class="fas fa-heart"></i> YES! PLEASE SAY YES! <i class="fas fa-heart"></i>';
+                }
+                
+                if (noClickCount >= noMessages.length - 1) {
+                    // Force yes button
+                    finalNo.style.display = 'none';
+                    finalYes.textContent = "THE ONLY ANSWER IS YES!";
+                    finalYes.style.fontSize = '2.5rem';
+                    finalYes.style.padding = '30px 80px';
+                    finalYes.style.animation = 'heartbeat 1s infinite';
+                }
+            }
+        });
+        
+        // Celebration effect
+        function createCelebration() {
+            const celebration = document.createElement('div');
+            celebration.style.position = 'fixed';
+            celebration.style.top = '0';
+            celebration.style.left = '0';
+            celebration.style.width = '100%';
+            celebration.style.height = '100%';
+            celebration.style.pointerEvents = 'none';
+            celebration.style.zIndex = '9999';
+            document.body.appendChild(celebration);
+            
+            // Create hearts
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤️';
+                    heart.style.position = 'absolute';
+                    heart.style.fontSize = Math.random() * 40 + 20 + 'px';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '100%';
+                    heart.style.opacity = '0.8';
+                    celebration.appendChild(heart);
+                    
+                    // Animate heart
+                    const animation = heart.animate([
+                        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                        { transform: `translateY(-${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                    });
+                    
+                    // Remove heart after animation
+                    animation.onfinish = () => heart.remove();
+                }, i * 50);
+            }
+            
+            // Create "She Said Yes!" message
+            setTimeout(() => {
+                const message = document.createElement('div');
+                message.innerHTML = '<h1 style="color: #ff4d6d; font-family: \'Dancing Script\', cursive; font-size: 5rem; text-align: center;">SHE SAID YES!</h1>';
+                message.style.position = 'fixed';
+                message.style.top = '50%';
+                message.style.left = '50%';
+                message.style.transform = 'translate(-50%, -50%)';
+                message.style.zIndex = '10000';
+                message.style.pointerEvents = 'none';
+                message.style.animation = 'heartbeat 2s infinite';
+                document.body.appendChild(message);
+                
+                // Remove message after 5 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 5000);
+            }, 1000);
+            
+            // Remove celebration element after animation
+            setTimeout(() => {
+                celebration.remove();
+            }, 6000);
+        }
+        
+        // Initialize
+        updateProgress();
+        
+        // Smooth scrolling for navigation
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const header = document.querySelector('header');
+            
+            // Parallax effect for header
+            header.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+        });
+        
+        // Image fallback handler
+        function handleImageError(img) {
+            console.log("Image failed to load: " + img.src);
+            // The onerror attribute in the HTML already handles this
+        }
+        
+        // Preload images to ensure they're ready
+        const imageUrls = ['img1.jpeg', 'img2.jpeg', 'img3.jpeg'];
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onerror = function() {
+                console.log("Could not load image: " + url);
+            };
+        });
+        
+        // Preload music file
+        const music = new Audio();
+        music.src = 'song.mp4';
+        music.preload = 'auto';
+        music.onerror = function() {
+            console.log("Could not load music file: song.mp4");
+            musicInfo.innerHTML = 'Music file not found';
+            musicInfo.style.color = '#f44336';
+        };
+    </script>
+</body>
+</html>
